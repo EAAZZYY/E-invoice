@@ -1,0 +1,10 @@
+{% extends 'invoice/base.html' %} {% block base %}
+<div>
+  <h1>Invoice Details</h1>
+  <h2>Name:{{ invoice.invoice_name }}</h2>
+  <!-- prettier-ignore -->
+  {% for item in invoice.item_set.all %}
+  {{ item.item_name }}
+  {% endfor %}
+</div>
+{% endblock %}
