@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-invoice</title>
+  </head>
+  <body>
+    <div>
+      <nav>
+        <div>
+          <a href="{% url 'invoice:home' %}"><h1>E-invoice</h1></a>
+        </div>
+        <div>
+          <a href="{% url 'login' %}">login</a>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">logout</button>
+          </form>
+          <a href="{% url 'invoice:add_business' %}">Add Business</a>
+          <a href="{% url 'invoice:create_customer' %}">Add Customer</a>
+          <a href="{% url 'invoice:create_invoice' %}">Create Invoice</a>
+          <a href="{% url 'invoice:home' %}">Business Details</a> |
+          <a href="{% url 'invoice:invoice_list' %}">My invoices</a>
+        </div>
+      </nav>
+    </div>
+    {% block base %} {% endblock %}
+  </body>
+</html>

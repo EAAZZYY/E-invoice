@@ -1,0 +1,31 @@
+{% extends 'invoice/base.html' %} {% block base %}
+<h1>Add Business And Account Details</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  <h3>Add Business</h3>
+  {{form.non_form_errors}} {{form.as_p}}
+  <div>
+    <h3>Add Account Detail</h3>
+  </div>
+  <!-- prettier-ignore -->
+  {{ create_account_formset.non_form_errors }} 
+    {{ create_account_formset.management_form }}
+  
+    {% for account_form in create_account_formset %}
+  <div>
+    <!-- prettier-ignore -->
+    {{ account_form.bank_name.label }}: {{ account_form.bank_name }} 
+    {{ account_form.account_name.label }}: {{ account_form.account_name }} 
+    {{account_form.account_number.label }}: {{account_form.account_number}}
+    <!-- prettier-ignore -->
+    {% if create_account_formset.can_delete %} 
+    {{account_form.DELETE}} {{account_form.DELETE.label }} 
+    {% endif %}
+  </div>
+  {% endfor %}
+  <div>
+    <button type="button">Submit</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'invoice/base.html' %} {% block base %}
+<h1>Invoice List Page</h1>
+<div>
+  <h3>Invoice List</h3>
+</div>
+<table>
+  <tr>
+    <th>Invoice Name</th>
+    <th>Invoice Number</th>
+    <th>Invoice Date</th>
+    <th>Invoice Total</th>
+    <th>Action</th>
+  </tr>
+  {% for invoice in invoices %}
+  <tr>
+    <td>{{ invoice.invoice_name }}</td>
+    <td>{{ invoice.invoice_number }}</td>
+    <td>{{ invoice.created_on }}</td>
+    <td>{{ invoice.grand_total }}</td>
+    <td>
+      <a href="{% url 'invoice:invoice_detail' invoice.invoice_slug %}">View</a>
+      | <a href="">Delete</a>
+    </td>
+  </tr>
+  {%endfor%}
+</table>
+
+{% endblock %}

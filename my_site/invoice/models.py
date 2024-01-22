@@ -28,7 +28,7 @@ class AccountDetail(models.Model):
     account_number = models.IntegerField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
-    business_profile = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
+    business_profile = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, related_name="account_detail")
     
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
@@ -56,15 +56,16 @@ class CustomerProfile(models.Model):
 
 
 class Invoice(models.Model):
-    invoice_name = models.CharField(max_length=200, blank=True, null=True)
+    invoice_name = models.CharField(max_length=200)
     invoice_slug = models.SlugField(max_length=200, blank=True, null=True)
     invoice_number = models.CharField(max_length=200, blank=True, null=True, unique=True)
-    invoice_date = models.DateField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now=True)
+    grand_total = models.DecimalField(max_digits=15, decimal_places=2,blank=True,null=True)
+    created_on = models.DateField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
     business_name = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
     customer_name = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
     
+        
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
             self.last_edited_on = timezone.localtime(timezone.now())
@@ -74,9 +75,6 @@ class Invoice(models.Model):
             
         if not self.invoice_number:
             self.invoice_number = str(uuid4()).split("-")[0]
-            
-        if not self.invoice_date:
-            self.invoice_date = timezone.localdate(timezone.now())
         
         return super(Invoice, self).save(*args, **kwargs)
     
@@ -84,36 +82,19 @@ class Invoice(models.Model):
         return self.invoice_name
     
 
-class InvoiceItem(models.Model):
+class Item(models.Model):
     item_name = models.CharField(max_length=200)
     item_quantity = models.IntegerField()
     item_price = models.IntegerField(blank=True, null=True)
     item_total = models.IntegerField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE )
     
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
             self.last_edited_on = timezone.localtime(timezone.now())
-        return super(InvoiceItem, self).save(*args, **kwargs)
+        return super(Item, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.item_name
-
-
-class InvoiceTotal(models.Model):
-    sub_total = models.IntegerField(blank=True,null=True)
-    tax_rate = models.DecimalField(max_digits=4, decimal_places=2,blank=True)
-    grand_total = models.DecimalField(max_digits=15, decimal_places=2)
-    created_on = models.DateTimeField(auto_now=True)
-    last_edited_on = models.DateTimeField(blank=True, null=True)
-    invoice = models.OneToOneField(Invoice, on_delete=models.CASCADE)
-    
-    def save(self,*args,**kwargs):
-        if self.last_edited_on == "None":
-            self.last_edited_on = timezone.localtime(timezone.now())
-        return super(InvoiceTotal, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.invoice.invoice_name}"s total amount'
