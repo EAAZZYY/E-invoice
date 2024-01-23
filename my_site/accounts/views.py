@@ -3,10 +3,12 @@ from .forms import RegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserEditForm, ProfileEditForm
+
 # Create your views here.
 
 @login_required
 def profile(request):
+    
     return render(request, "accounts/profile.html")
 
 def signup(request):
@@ -37,4 +39,4 @@ def editprofile(request):
             "user_form":user_form,
             "profile_form":profile_form
         }
-        return render(request, "accounts/profile_edit.html", context)
+        return render(request, "accounts/edit_profile.html", context)

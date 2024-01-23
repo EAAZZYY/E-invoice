@@ -1,40 +1,60 @@
-{% extends 'invoice/base.html' %} {% block base %}
-<h1>Create Invoice</h1>
-<form method="POST">
-  <div>
-    {% csrf_token %}
-    <h3>Create Invoice</h3>
-    {{ form.non_form_errors }}
-    <p>{{ form.invoice_name.label }}: {{ form.invoice_name }}</p>
-    <p>{{ form.business_name.label }}: {{ form.business_name }}</p>
-    <p>{{ form.customer_name.label }}: {{ form.customer_name }}</p>
-    <h3>Add Items</h3>
-    <!-- prettier-ignore -->
-    {{ items_formset.non_form_errors }}
-    {{ items_formset.management_form }}
-    {% for items in items_formset %}
-    <div style="display: flex">
-      <!-- prettier-ignore -->
-      <p id="{{ items.item_name.label }}">
-        {{ items.item_name.label }}: {{items.item_name}}</p>
-      <p id="{{ items.item_quantity.label }}">
-        {{ items.item_quantity.label }}: {{items.item_quantity}}
-      </p>
-      <p id="{{ items.item_price.label }}">
-        {{ items.item_price.label }}: {{items.item_price}}
-      </p>
-      <p id="{{ items.item_total.label }}">
-        {{ items.item_total.label }}: {{items.item_total}}
-      </p>
-      <!-- prettier-ignore -->
-      {% if items_formset.can_delete %}
-      <p>{{ items.DELETE }} {{ items.DELETE.label }}</p>
-      {% endif %}
+<!-- prettier-ignore -->
+{% extends 'invoice/base.html' %}
+{% block base %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header text-white bg-info">
+          <div class="card-title">Create Invoice</div>
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <!-- prettier-ignore -->
+              {{ form.non_form_errors }}
+              <p>{{ form.invoice_name.label }}: {{ form.invoice_name }}</p>
+              <p>{{ form.business_name.label }}: {{ form.business_name }}</p>
+              <p>{{ form.customer_name.label }}: {{ form.customer_name }}</p>
+            </div>
+            <div class="card-header text-white bg-info">
+              <div class="card-title">Add Items</div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <!-- prettier-ignore -->
+                {{ items_formset.non_form_errors }}
+                {{ items_formset.management_form }}
+                {% for items in items_formset %}
+                <div style="display: flex">
+                  <!-- prettier-ignore -->
+                    <p id="{{ items.item_name.label }}">
+                      {{ items.item_name.label }}: {{items.item_name}}</p>
+                    <p id="{{ items.item_quantity.label }}">
+                      {{ items.item_quantity.label }}: {{items.item_quantity}}
+                    </p>
+                    <p id="{{ items.item_price.label }}">
+                      {{ items.item_price.label }}: {{items.item_price}}
+                    </p>
+                    <p id="{{ items.item_total.label }}">
+                      {{ items.item_total.label }}: {{items.item_total}}
+                    </p>
+                    <!-- prettier-ignore -->
+                    {% if items_formset.can_delete %}
+                    <p>{{ items.DELETE }} {{ items.DELETE.label }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+                  <p>{{ form.grand_total.label }}: {{ form.grand_total }}</p>
+            </div>
+            </div>
+            <button type="submit">Create Invoice</button>
+          </form>
+        </div>
+      </div>
     </div>
-    {% endfor %}
   </div>
-  <p>{{ form.grand_total.label }}: {{ form.grand_total }}</p>
-
-  <button type="submit">Create</button>
-</form>
+</div>
 {% endblock %}

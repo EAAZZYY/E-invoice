@@ -1,21 +1,27 @@
-<h1>PROFILE.HTML</h1>
+{% extends 'accounts/base.html' %} {% block base %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row offset-md-2">
+        <div class="col-md-4">
+          <img
+            src="{{ user.profile.profile_pix.url }}"
+            alt="{{ user.username }}'s picture"
+            width="300px"
+          />
+        </div>
+        <div class="col-md-6">
+          <h2>Contact Details</h2>
+          <h4>Name: {{ user.first_name }} {{ user.last_name }}</h4>
+          <h4>Phone Number: {{ user.profile.phone_number }}</h4>
+          <h4>Joined on: {{ user.profile.created_on }}</h4>
+          <a class="btn btn-primary" href="{% url 'edit_profile' %}"
+            >Edit_Profile</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<form method="POST" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button>Logout</button>
-</form>
-<a href="{% url 'edit_profile' %}">Edit profile</a>
-<a href="{% url 'password_change' %}">Change Password</a>
-<a href="{% url 'password_reset' %}">Rest Password</a>
-<!-- prettier-ignore -->
-{% if messages %}
-{% for message in messages %}
-{{message}}
-{% endfor %}
-{% endif %}
-
-<h4>{{request.user.username}}</h4>
-<img
-  src="{{ user.profile.profile_pix.url }}"
-  alt="{{ user.username }}'s picture"
-/>
+{% endblock %}

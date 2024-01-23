@@ -1,28 +1,46 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
+from django.views.generic import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from . import forms
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import redirect_to_login
 from . import models
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
-class HomeListView(ListView):
+class LoginRequired(LoginRequiredMixin):
+    login_url = '/accounts/login'
+    redirect_field_name = 'next'
+    
+    def dispatch(self, request,*args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect_to_login(
+                self.request.get_full_path(),
+                self.get_login_url(),
+                self.get_redirect_field_name())
+        return super(LoginRequired, self).dispatch(request,self,*args,**kwargs)
+
+class HomeView(TemplateView):
+    template_name = 'invoice/home.html'
+
+class BusinessListView(LoginRequired, ListView):
     model = models.CustomerProfile
     context_object_name = 'customers'
-    template_name = 'invoice/home.html'
+    template_name = 'invoice/business.html'
     
     def get_context_data(self, **kwargs):
-        context = super(HomeListView, self).get_context_data(**kwargs)
+        context = super(BusinessListView, self).get_context_data(**kwargs)
         business_profile = models.BusinessProfile.objects.filter(user=self.request.user)
         
         context['businesses'] = business_profile
-        context['account_detail'] = models.AccountDetail.objects.filter(business_profile__in=business_profile)
         return context
     
-class InvoiceListView(ListView):
+class InvoiceListView(LoginRequired, ListView):
     model = models.Item
     template_name = 'invoice/invoice_list.html'
     
@@ -33,25 +51,13 @@ class InvoiceListView(ListView):
         context['invoices'] = invoices
         return context
 
-def invoicedetail(request, slug):
-    invoice = models.Invoice.objects.get(invoice_slug=slug)
-    # invoice_items = invoice.invoice_set.all()
-    return render(request, 'invoice/invoice_detail.html', context={'invoice':invoice})
-
-
-def customerdetail(request, id):
-    customer = models.CustomerProfile.objects.get(id=id)
-    # invoice_items = invoice.invoice_set.all()
-    return render(request, 'invoice/customer_detail.html', context={'customer':customer})
-
-    
-class CustomerCreateView(CreateView):
+class CustomerCreateView(LoginRequired,CreateView):
     model = models.CustomerProfile
     form_class = forms.CustomerForm
     template_name = 'invoice/form.html'
     success_url = '/home/'
     
-class AddBusinessView(CreateView):
+class AddBusinessView(LoginRequired,CreateView):
     models = models.BusinessProfile
     form_class = forms.BusinessForm
     template_name = 'invoice/form.html'
@@ -69,12 +75,12 @@ class AddBusinessView(CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return redirect('invoice:home')
+        return redirect('invoice:business')
             
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
 
-class InvoiceCreateView(CreateView):
+class InvoiceCreateView(LoginRequired,CreateView):
     model = models.Invoice
     form_class = forms.InvoiceForm
     template_name = 'invoice/invoice_form.html'
@@ -109,3 +115,32 @@ class InvoiceCreateView(CreateView):
             self.get_context_data(form=form,items_formset=items_formset)
         )
         
+@login_required
+def invoicedetail(request, slug):
+    invoice = models.Invoice.objects.get(invoice_slug=slug)
+    # invoice_items = invoice.invoice_set.all()
+    return render(request, 'invoice/invoice_detail.html', context={'invoice':invoice})
+
+    
+@login_required
+def invoicedelete(request,slug):
+    invoice = models.Invoice.objects.get(invoice_slug=slug)
+    if request.method == 'POST':
+        invoice.delete()
+        return redirect('invoice:invoice_list')    
+    
+    return render(request, 'invoice/delete.html', context={"invoice":invoice})
+    
+def deletecustomer(request, id):
+    customer = models.CustomerProfile.objects.get(id=id)
+    if request.method == 'POST':
+        customer.delete()
+        return redirect('invoice:business')
+    return render(request, 'invoice/delete.html', context={'customer':customer})
+
+def deletebusiness(request, id):
+    business = models.BusinessProfile.objects.get(id=id)
+    if request.method == 'POST':
+        business.delete()
+        return redirect('invoice:business')
+    return render(request, 'invoice/delete.html', context={'business':business})

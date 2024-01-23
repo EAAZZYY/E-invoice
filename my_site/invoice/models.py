@@ -22,23 +22,6 @@ class BusinessProfile(models.Model):
         return self.business_name
 
     
-class AccountDetail(models.Model):
-    bank_name = models.CharField(max_length=200, blank=True, null=True)
-    account_name = models.CharField(max_length=200, blank=True, null=True)
-    account_number = models.IntegerField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now=True)
-    last_edited_on = models.DateTimeField(blank=True, null=True)
-    business_profile = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, related_name="account_detail")
-    
-    def save(self,*args,**kwargs):
-        if self.last_edited_on == "None":
-            self.last_edited_on = timezone.localtime(timezone.now())
-        return super(AccountDetail, self).save(*args,**kwargs)
-    
-    def __str__(self):
-        return f"{self.business_profile.business_name}'s account details"
-
-    
 class CustomerProfile(models.Model):
     customer_name = models.CharField(max_length=200)
     customer_email = models.EmailField(blank=True, null=True)

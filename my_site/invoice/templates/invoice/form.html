@@ -1,11 +1,22 @@
 <!-- prettier-ignore -->
 {% extends 'invoice/base.html' %}
 {% block base %}
-<h1>Add Customers</h1>
-<!-- prettier-ignore -->
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Add Customer</button>
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 offset-md-3">
+      <div class="card">
+        <div class="card-header text-white bg-info">
+          <div class="card-title">Add Customers</div>
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">{{form.as_p}}</div>
+            <button type="submit">Add Customer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

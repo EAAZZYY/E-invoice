@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import BusinessProfile, CustomerProfile, AccountDetail, Invoice, Item
+from .models import BusinessProfile, CustomerProfile, Invoice, Item
 
 class BusinessForm(forms.ModelForm):
     class Meta:
@@ -11,11 +11,6 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = CustomerProfile
         fields = ['customer_name','customer_email', 'customer_phone_number']
-
-class AccountForm(forms.ModelForm):
-    class Meta:
-        model = AccountDetail
-        fields = ['bank_name','account_name','account_number']
 
 class InvoiceForm(forms.ModelForm):
     class Meta:
