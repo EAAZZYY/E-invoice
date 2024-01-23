@@ -1,10 +1,50 @@
 {% extends 'invoice/base.html' %} {% block base %}
-<div>
-  <h1>Invoice Details</h1>
-  <h2>Name:{{ invoice.invoice_name }}</h2>
-  <!-- prettier-ignore -->
-  {% for item in invoice.item_set.all %}
-  {{ item.item_name }}
-  {% endfor %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card bg-info">
+        <div class="row bg-primary">
+          <div class="col-md-6 card-header text-white">
+            <h1>{{ invoice.business_name.business_name|upper }}</h1>
+          </div>
+          <div class="col-md-6 card-header text-white">
+            <h3>INVOICE</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Invoice to: {{ invoice.invoice_name }}</h4>
+          </div>
+          <div class="col-md-6">
+            <h4>Date: {{ invoice.created_on }}</h4>
+            <h4>Invoice No: {{ invoice.invoice_number }}</h4>
+          </div>
+        </div>
+        <br />
+        <div class="col-md-12">
+          `
+          <table class="table table-primary table-striped-columns">
+            <tr>
+              <th>Item Description</th>
+              <th>Quantity</th>
+              <th>Unit price</th>
+              <th>Amount</th>
+            </tr>
+            {% for item in invoice.item_set.all %}
+            <tr>
+              <td>{{ item.item_name }}</td>
+              <td>{{ item.item_quantity }}</td>
+              <td>{{ item.item_price }}</td>
+              <td>{{ item.item_total }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        <h3>Invoice Total: #{{ invoice.grand_total }}</h3>
+        <h6>Thanks for your patronage</h6>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

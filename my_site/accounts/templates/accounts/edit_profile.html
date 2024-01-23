@@ -6,13 +6,17 @@
     <div class="col-md-4 offset-md-4">
       <div class="card">
         <div class="card-header text-white bg-info">
-          <div class="card-title">Reset Password</div>
+          <div class="card-title">Change Password</div>
         </div>
         <div class="card-body">
           <form method="POST">
             {% csrf_token %}
-            <div class="form-group">{{form.as_p}}</div>
-            <button type="submit">Reset-Password</button>
+            <div class="form-group">
+              <!-- prettier-ignore -->
+              {{user_form.as_p}}
+                {{profile_form.as_p}}
+            </div>
+            <button type="submit">Submit</button>
           </form>
         </div>
       </div>
