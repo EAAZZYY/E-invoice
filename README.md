@@ -1,1 +1,1 @@
-# Away to atore your invoice on the cloud
+# A way to store your invoice on the cloud
