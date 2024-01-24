@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView,UpdateView
 from django.views.generic.detail import DetailView
 from . import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -114,6 +114,7 @@ class InvoiceCreateView(LoginRequired,CreateView):
         return self.render_to_response(
             self.get_context_data(form=form,items_formset=items_formset)
         )
+    
         
 @login_required
 def invoicedetail(request, slug):
