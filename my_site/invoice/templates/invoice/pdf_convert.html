@@ -1,15 +1,15 @@
-{% extends 'invoice/base.html' %} {% block base %}
-
 <div class="container">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="row">
           <div class="col-md-6 card-header">
-            <h1>{{ invoice.business_name.business_name|upper }}</h1>
+            <h1 style="color: chocolate">
+              {{ invoice.business_name.business_name|upper }}
+            </h1>
           </div>
           <div class="col-md-6 card-header">
-            <h3>INVOICE</h3>
+            <h3 style="color: crimson">INVOICE</h3>
           </div>
         </div>
         <div class="row">
@@ -25,7 +25,7 @@
         <div class="col-md-12">
           `
           <table class="table table-striped">
-            <thead>
+            <thead style="color: rgb(255, 0, 0)">
               <tr>
                 <th>Item Description</th>
                 <th>Quantity</th>
@@ -46,14 +46,8 @@
           </table>
         </div>
         <h3>Invoice Total: #{{ invoice.grand_total }}</h3>
-        <h6>Thanks for your patronage</h6>
+        <h6><i>Thanks for your patronage</i></h6>
       </div>
     </div>
   </div>
-  <a
-    class="btn btn-primary m-2"
-    href="{% url 'invoice:pdf_convert' invoice.invoice_slug %}"
-    >Create PDF</a
-  >
 </div>
-{% endblock %}

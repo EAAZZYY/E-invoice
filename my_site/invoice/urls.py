@@ -13,5 +13,6 @@ urlpatterns = [
     path('invoice_detail/<slug:slug>', views.invoicedetail,name='invoice_detail'),
     path('delete_invoice/<slug:slug>/', views.invoicedelete,name='delete_invoice'),
     path('delete_customer/<int:id>', views.deletecustomer,name='delete_customer'),
-    path('delete_business/<int:id>/', views.deletebusiness, name='delete_business')
+    path('delete_business/<int:id>/', views.deletebusiness, name='delete_business'),
+    path('pdf_convert/<slug:slug>', views.pdf_convert,name='pdf_convert')
 ]
