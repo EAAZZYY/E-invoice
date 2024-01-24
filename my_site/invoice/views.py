@@ -9,7 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from . import models
 from django.contrib.auth.decorators import login_required
-
+from django.template.loader import get_template
+from django.http import HttpResponse
+from xhtml2pdf import pisa
 
 # Create your views here.
 
@@ -115,6 +117,25 @@ class InvoiceCreateView(LoginRequired,CreateView):
             self.get_context_data(form=form,items_formset=items_formset)
         )
     
+
+def pdf_convert(request, slug):
+    template_path = 'invoice/pdf_convert.html'
+    invoice=models.Invoice.objects.get(invoice_slug=slug)
+    context = {'invoice':invoice }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="E-invoice.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
         
 @login_required
 def invoicedetail(request, slug):
