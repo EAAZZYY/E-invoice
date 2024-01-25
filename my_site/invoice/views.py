@@ -124,7 +124,7 @@ def pdf_convert(request, slug):
     context = {'invoice':invoice }
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="E-invoice.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="E-invoice.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
