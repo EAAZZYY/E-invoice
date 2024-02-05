@@ -1,0 +1,15 @@
+{
+  "name": "my_site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss build accounts/static/accounts/input.css -o accounts/static/accounts/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tailwindcss": "3.4"
+  }
+}
