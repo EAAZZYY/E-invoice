@@ -1,27 +1,37 @@
 {% extends 'accounts/base.html' %} {% block base %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="row offset-md-2">
-        <div class="col-md-4">
-          <img
-            src="{{ user.profile.profile_pix.url }}"
-            alt="{{ user.username }}'s picture"
-            width="300px"
-          />
-        </div>
-        <div class="col-md-6">
-          <h2>Contact Details</h2>
-          <h4>Name: {{ user.first_name }} {{ user.last_name }}</h4>
-          <h4>Phone Number: {{ user.profile.phone_number }}</h4>
-          <h4>Joined on: {{ user.profile.created_on }}</h4>
-          <a class="btn btn-primary" href="{% url 'edit_profile' %}"
-            >Edit_Profile</a
-          >
-        </div>
-      </div>
+<div class="grid grid-cols-2 p-5">
+  <div class="col-span-1 mr-5 flex justify-center">
+    <img
+      class="bg-white overflow-hidden object-cover shadow-lg rounded p-2"
+      src="{{ user.profile.profile_pix.url }}"
+      alt="{{ user.username }}'s picture"
+    />
+  </div>
+  <div class="col-span-1">
+    <div class="p-5 bg-blue-950 text-white font-bold text-2xl text-center">
+      Contact Details
     </div>
+    <div class="uppercase font-bold p-3">
+      Username:
+      <span>{{ user.username }}</span>
+    </div>
+    <div class="uppercase font-bold p-3">
+      Name:
+      <span>{{ user.first_name }} {{ user.last_name }}</span>
+    </div>
+    <div class="uppercase font-bold p-3">
+      Phone Number: {{ user.profile.phone_number }}
+    </div>
+    <div class="font-semibold p-3 italic">
+      Registered on: {{ user.profile.created_on }}
+    </div>
+    <a href="{% url 'edit_profile' %}">
+      <div
+        class="bg-red-700 rounded-full p-4 text-center font-bold text-lg text-white"
+      >
+        Edit_Profile
+      </div>
+    </a>
   </div>
 </div>
-
 {% endblock %}
