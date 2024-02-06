@@ -1,21 +1,24 @@
 <!-- prettier-ignore -->
-{% extends 'accounts/base.html' %}
+{% extends 'accounts/home_base.html' %}
 {% block base %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-4 offset-md-4">
-      <div class="card">
-        <div class="card-header text-white bg-info">
-          <div class="card-title">Register</div>
-        </div>
-        <div class="card-body">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">{{form.as_p}}</div>
-            <button type="submit">Sign-up</button>
-          </form>
-        </div>
+
+<div class="flex justify-center m-10">
+  <div class="border border-blue-700 p-10">
+    <div class="bg-gray-300 p-5 font-bold text-2xl text-center">Register</div>
+    <form method="POST">
+      {% csrf_token %} {% for field in form %}
+      <div class="uppercase mt-5 font-semibold">
+        {{ field.name }}:
+        <span class="border-2 border-black">{{ field }}</span>
       </div>
+      {% endfor %}
+
+      <div class="mt-5 p-3 text-white text-center text-lg bg-red-500 font-bold">
+        <button type="submit">Sign-up</button>
+      </div>
+    </form>
+    <div class="my-8">
+      <a class="p-3 bg-slate-300" href="{% url 'login' %}">Login</a>
     </div>
   </div>
 </div>
