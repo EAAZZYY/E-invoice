@@ -3,52 +3,42 @@
   <div class="mt-10">
     <a
       class="bg-blue-600 p-3 text-white font-bold rounded uppercase"
-      href="{% url 'invoice:create_invoice' %}"
-      >Create Invoice</a
+      href="{% url 'invoice:create_customer' %}"
+      >Add Customer</a
     >
   </div>
   <div class="mt-10">
     <table class="w-full text-left">
       <thead class="bg-red-700 text-white border border-red-700 uppercase">
         <tr>
-          <th class="px-6 py-3">Title</th>
-          <th class="px-6 py-3">Number</th>
-          <th class="px-6 py-3">Date</th>
-          <th class="px-6 py-3">Total</th>
+          <th class="px-6 py-3">Customer Name</th>
+          <th class="px-6 py-3">Customer Email</th>
+          <th class="px-6 py-3">Customer Phone Number</th>
           <th class="px-6 py-3">Action</th>
         </tr>
       </thead>
-      {% for invoice in invoices %}
       <tbody class="font-semibold">
         <tr>
+          {% for customer in customers %}
           <td class="px-6 py-3 border border-black">
-            {{ invoice.invoice_name }}
+            {{ customer.customer_name }}
           </td>
           <td class="px-6 py-3 border border-black">
-            {{ invoice.invoice_number }}
+            {{ customer.customer_email }}
           </td>
           <td class="px-6 py-3 border border-black">
-            {{ invoice.created_on }}
-          </td>
-          <td class="px-6 py-3 border border-black">
-            {{ invoice.grand_total }}
+            {{ customer.customer_phone_number }}
           </td>
           <td class="px-6 py-3 border border-black">
             <a
               class="border rounded px-2 py-1 bg-red-950 text-white"
-              href="{% url 'invoice:invoice_detail' invoice.invoice_slug %}"
-              >View</a
-            >
-
-            <a
-              class="border rounded px-2 py-1 bg-red-950 text-white"
-              href="{% url 'invoice:delete_invoice' invoice.invoice_slug %}"
+              href="{% url 'invoice:delete_customer' customer.id %}"
               >Delete</a
             >
           </td>
+          {% endfor %}
         </tr>
       </tbody>
-      {%endfor%}
     </table>
   </div>
 </div>

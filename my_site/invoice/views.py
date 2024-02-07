@@ -30,17 +30,16 @@ class LoginRequired(LoginRequiredMixin):
 class HomeView(TemplateView):
     template_name = 'invoice/home.html'
 
-class BusinessListView(LoginRequired, ListView):
-    model = models.CustomerProfile
-    context_object_name = 'customers'
-    template_name = 'invoice/business.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super(BusinessListView, self).get_context_data(**kwargs)
-        business_profile = models.BusinessProfile.objects.filter(user=self.request.user)
-        
-        context['businesses'] = business_profile
-        return context
+
+def business_list(request):
+    businesses = models.BusinessProfile.objects.filter(user=request.user)
+    return render(request, "invoice/business.html", context={"businesses":businesses})
+
+def customer_list(request):
+    logged_user = request.user
+    business = models.BusinessProfile.objects.filter(user=logged_user)
+    customers = models.CustomerProfile.objects.filter(business__in=business)
+    return render(request, "invoice/customer_list.html", context={"customers":customers})
     
 class InvoiceListView(LoginRequired, ListView):
     model = models.Item
