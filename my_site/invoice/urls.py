@@ -5,7 +5,8 @@ app_name = "invoice"
 
 urlpatterns = [
     path('',views.HomeView.as_view(),name='home'),
-    path('business_list/',views.BusinessListView.as_view(),name='business'),
+    path('business_list/',views.business_list,name='business'),
+    path('customers_list/',views.customer_list, name="customer_list"),
     path('invoice_list/',views.InvoiceListView.as_view(), name='invoice_list'),
     path('create_business/',views.AddBusinessView.as_view(), name='add_business'),
     path('create_customers/', views.CustomerCreateView.as_view(), name='create_customer'),

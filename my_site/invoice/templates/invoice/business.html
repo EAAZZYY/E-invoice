@@ -1,56 +1,45 @@
-{% extends 'invoice/base.html' %} {% block base %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div>
-        <h3>Business List</h3>
-        <a href="{% url 'invoice:add_business' %}">Add Business</a>
-        <table class="table table-primary table-striped-columns">
-          <tr>
-            <th>Business Name</th>
-            <th>Business Line</th>
-            <th>Business Email</th>
-            <th>Action</th>
-          </tr>
-          {% for business in businesses %}
-          <tr>
-            <td>{{ business.business_name }}</td>
-            <td>{{ business.business_line }}</td>
-            <td>{{ business.business_email }}</td>
-            <td>
-              <a href="{% url 'invoice:delete_business' business.id %}"
-                >Delete</a
-              >
-            </td>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-      <div>
-        <h3>Customer List</h3>
-        <a href="{% url 'invoice:create_customer' %}">Add Customer</a>
-        <table class="table table-primary table-striped-columns">
-          <tr>
-            <th>Customer Name</th>
-            <th>Customer Email</th>
-            <th>Customer Phone Number</th>
-            <th>Action</th>
-          </tr>
-          <tr>
-            {% for customer in customers %}
-            <td>{{ customer.customer_name }}</td>
-            <td>{{ customer.customer_email }}</td>
-            <td>{{ customer.customer_phone_number }}</td>
-            <td>
-              <a href="{% url 'invoice:delete_customer' customer.id %}"
-                >Delete</a
-              >
-            </td>
-            {% endfor %}
-          </tr>
-        </table>
-      </div>
-    </div>
+{% extends 'accounts/base.html' %} {% block base %}
+<div class="m-5">
+  <div class="mt-10">
+    <a
+      class="bg-blue-600 p-3 text-white font-bold rounded uppercase"
+      href="{% url 'invoice:add_business' %}"
+      >Add Business</a
+    >
+  </div>
+  <div class="mt-10">
+    <table class="w-full text-left">
+      <thead class="bg-red-700 text-white border border-red-700 uppercase">
+        <tr>
+          <th class="px-6 py-3">Business Name</th>
+          <th class="px-6 py-3">Business Line</th>
+          <th class="px-6 py-3">Business Email</th>
+          <th class="px-6 py-3">Action</th>
+        </tr>
+      </thead>
+      {% for business in businesses %}
+      <tbody class="font-semibold">
+        <tr>
+          <td class="px-6 py-3 border border-black">
+            {{ business.business_name }}
+          </td>
+          <td class="px-6 py-3 border border-black">
+            {{ business.business_line }}
+          </td>
+          <td class="px-6 py-3 border border-black">
+            {{ business.business_email }}
+          </td>
+          <td class="px-6 py-3 border border-black">
+            <a
+              class="border rounded px-2 py-1 bg-red-950 text-white"
+              href="{% url 'invoice:delete_business' business.id %}"
+              >Delete</a
+            >
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
   </div>
 </div>
 {% endblock %}

@@ -28,6 +28,7 @@ class CustomerProfile(models.Model):
     customer_phone_number = models.IntegerField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
+    business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, related_name="business")
     
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
