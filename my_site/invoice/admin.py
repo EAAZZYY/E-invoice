@@ -1,8 +1,11 @@
 from django.contrib import admin
-from .models import BusinessProfile, CustomerProfile, Invoice, Item
 
+from .models import BusinessProfile, Customer, Invoice
+
+"""
+Registering models for interaction on the backend
+"""
 # Register your models here.
 admin.site.register(BusinessProfile)
-admin.site.register(CustomerProfile)
+admin.site.register(Customer)
 admin.site.register(Invoice)
-admin.site.register(Item)

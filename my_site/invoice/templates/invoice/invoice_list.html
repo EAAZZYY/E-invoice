@@ -1,5 +1,10 @@
-{% extends 'accounts/base.html' %} {% block base %}
+<!-- Extend template from base.html -->
+<!-- prettier-ignore -->
+{% extends 'accounts/base.html' %} 
+{% block base %}
+<!-- Body container -->
 <div class="m-5">
+  <!-- Create Invoice Button -->
   <div class="mt-10">
     <a
       class="bg-blue-600 p-3 text-white font-bold rounded uppercase"
@@ -7,8 +12,11 @@
       >Create Invoice</a
     >
   </div>
+  <!-- Table Starts -->
   <div class="mt-10">
+    <!-- Table Container -->
     <table class="w-full text-left">
+      <!-- Table Head -->
       <thead class="bg-red-700 text-white border border-red-700 uppercase">
         <tr>
           <th class="px-6 py-3">Title</th>
@@ -18,10 +26,11 @@
           <th class="px-6 py-3">Action</th>
         </tr>
       </thead>
+      <!-- Table Body -->
       {% for invoice in invoices %}
       <tbody class="font-semibold">
         <tr>
-          <td class="px-6 py-3 border border-black">
+          <td class="font-bold capitalize px-6 py-3 border border-black">
             {{ invoice.invoice_name }}
           </td>
           <td class="px-6 py-3 border border-black">
@@ -33,13 +42,13 @@
           <td class="px-6 py-3 border border-black">
             {{ invoice.grand_total }}
           </td>
+          <!-- Action Buttons -->
           <td class="px-6 py-3 border border-black">
             <a
               class="border rounded px-2 py-1 bg-red-950 text-white"
               href="{% url 'invoice:invoice_detail' invoice.invoice_slug %}"
               >View</a
             >
-
             <a
               class="border rounded px-2 py-1 bg-red-950 text-white"
               href="{% url 'invoice:delete_invoice' invoice.invoice_slug %}"

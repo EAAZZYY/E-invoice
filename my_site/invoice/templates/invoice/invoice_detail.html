@@ -1,75 +1,83 @@
-{% extends 'accounts/base.html' %} {% block base %}
-
-<div class="bg-gray-200 h-screen">
-  <div class="mx-20 my-10">
-    <div class="grid grid-cols-6">
-      <div class="col-span-4">
-        <div class="font-bold text-blue-900 text-5xl">
-          {{ invoice.business_name.business_name|upper }}
-        </div>
-        <div class="mt-5">
-          <div>
-            <p class="font-semibold text-lg text-red-600">Invoice title</p>
-            <p class="font-bold uppercase">{{ invoice.invoice_name }}</p>
-          </div>
-        </div>
+<!-- Extend template from base.html -->
+<!-- prettier-ignore -->
+{% extends 'accounts/base.html' %} 
+{% block base %}
+<!-- Body container -->
+<div class="bg-gray-200 h-full mx-20 my-10">
+  <!-- Business name and Invoice grid container -->
+  <div class="grid grid-cols-6">
+    <!-- Business name and Invoice Title column -->
+    <div class="col-span-4">
+      <div class="font-bold text-blue-900 uppercase text-5xl">
+        {{ invoice.business_name.business_name }}
       </div>
-      <div class="col-span-2">
-        <div class="font-bold text-4xl text-red-600 pr-10">INVOICE</div>
-        <div class="mt-5">
-          <p class="font-semibold text-lg text-red-600">Date</p>
-          <p class="font-bold uppercase">{{ invoice.created_on }}</p>
-          <p class="font-semibold text-lg text-red-600">Invoice No</p>
-          <p class="font-bold uppercase">{{ invoice.invoice_number }}</p>
+      <div class="mt-5">
+        <div>
+          <p class="font-semibold text-lg text-red-600">Invoice title</p>
+          <p class="font-bold uppercase">{{ invoice.invoice_name }}</p>
         </div>
       </div>
     </div>
-    <div class="mt-10">
-      <table class="w-full text-left">
-        <thead class="bg-blue-700 text-white border border-blue-700 uppercase">
-          <tr>
-            <th class="px-6 py-3">Item Description</th>
-            <th class="px-6 py-3">Quantity</th>
-            <th class="px-6 py-3">Unit price</th>
-            <th class="px-6 py-3">Amount</th>
-          </tr>
-        </thead>
-        {% for item in invoice.item_set.all %}
-        <tbody class="font-semibold">
-          <tr>
-            <td class="px-6 py-3 border border-black">{{ item.item_name }}</td>
-            <td class="px-6 py-3 border bg-gray-300 border-black">
-              {{ item.item_quantity }}
-            </td>
-            <td class="px-6 py-3 border border-black">{{ item.item_price }}</td>
-            <td class="px-6 py-3 border bg-gray-300 border-black">
-              {{ item.item_total }}
-            </td>
-          </tr>
-        </tbody>
-        {% endfor %}
-      </table>
-      <div class="flex justify-end gap-3 mt-5 mr-10">
-        <h3 class="bg-red-600 p-4 font-bold text-xl text-white">
-          Invoice Total:
-        </h3>
-        <h3 class="bg-gray-300 p-4 font-bold text-2xl">
-          #{{ invoice.grand_total }}
-        </h3>
-      </div>
-      <div>
-        <h6 class="italic font-semibold text-lg">
-          Thank you for your patronage
-        </h6>
+    <!-- Invoice, Invoice date and Invoice Number column -->
+    <div class="col-span-2">
+      <div class="font-bold text-4xl text-red-600 pr-10">INVOICE</div>
+      <div class="mt-5">
+        <p class="font-semibold text-lg text-red-600">Date</p>
+        <p class="font-bold uppercase">{{ invoice.created_on }}</p>
+        <p class="font-semibold text-lg text-red-600">Invoice No</p>
+        <p class="font-bold uppercase">{{ invoice.invoice_number }}</p>
       </div>
     </div>
-    <div class="my-5 mx-5 p-3 flex justify-center border-t-2 border-black">
-      <a
-        class="p-2 text-white text-center text-lg bg-blue-700 font-bold"
-        href="{% url 'invoice:pdf_convert' invoice.invoice_slug %}"
-        >Create PDF</a
-      >
+  </div>
+  <!-- Grid ends -->
+  <!-- Table Container -->
+  <div class="mt-10">
+    <table class="w-full text-left">
+      <!-- Table Head -->
+      <thead class="bg-blue-700 text-white border border-blue-700 uppercase">
+        <tr>
+          <th class="px-6 py-3">Item Description</th>
+          <th class="px-6 py-3">Quantity</th>
+          <th class="px-6 py-3">Unit price</th>
+          <th class="px-6 py-3">Amount</th>
+        </tr>
+      </thead>
+      <!-- Table Body -->
+      {% for item in invoice.item_set.all %}
+      <tbody class="font-semibold">
+        <tr>
+          <td class="px-6 py-3 border border-black">{{ item.item_name }}</td>
+          <td class="px-6 py-3 border bg-gray-300 border-black">
+            {{ item.item_quantity }}
+          </td>
+          <td class="px-6 py-3 border border-black">{{ item.item_price }}</td>
+          <td class="px-6 py-3 border bg-gray-300 border-black">
+            {{ item.item_total }}
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+    <!-- Table Ends -->
+    <div class="flex justify-end gap-3 mt-5 mr-10">
+      <h3 class="bg-red-600 p-4 font-bold text-xl text-white">
+        Invoice Total:
+      </h3>
+      <h3 class="bg-gray-300 p-4 font-bold text-2xl">
+        #{{ invoice.grand_total }}
+      </h3>
     </div>
+    <div>
+      <h6 class="italic font-semibold text-lg">Thank you for your patronage</h6>
+    </div>
+  </div>
+  <!-- Create PDF Button -->
+  <div class="my-5 mx-5 p-3 flex justify-center border-t-2 border-black">
+    <a
+      class="p-2 text-white text-center text-lg bg-blue-700 font-bold"
+      href="{% url 'invoice:pdf_convert' invoice.invoice_slug %}"
+      >Create PDF</a
+    >
   </div>
 </div>
 {% endblock %}

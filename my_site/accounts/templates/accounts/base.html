@@ -1,16 +1,26 @@
+<!-- This template is the UI displayed when user is authenticated -->
+
+<!-- Django Load static tag -->
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E-invoice</title>
+
+    <!-- Link to tailwind file -->
     <link rel="stylesheet" href="{% static 'accounts/output.css' %}" />
   </head>
+
   <body>
     <header>
+      <!-- Navbar Wrapper -->
       <nav class="shadow-md bg-slate-100 border-b-2 border-blue-300">
+        <!-- Logo and Navitems-Toggle container -->
         <div class="p-3 flex justify-between">
+          <!-- Logo container -->
           <div class="flex items-center gap-2">
             <div>
               <svg
@@ -36,6 +46,8 @@
               >
             </div>
           </div>
+
+          <!-- Item toggle for small screens -->
           <div
             id="toggle"
             class="text-red-600 cursor-pointer md:hidden font-medium"
@@ -56,6 +68,7 @@
             </svg>
           </div>
         </div>
+        <!-- Nav Items -->
         <ul id="items" class="hidden pr-5 md:block">
           <div class="md:flex justify-end gap-2 text-gray-700 text-right">
             <li class="bg-slate-200 p-2"><a href="">About</a></li>
@@ -63,15 +76,24 @@
           </div>
         </ul>
       </nav>
+      <!-- Navbar Ends -->
+
+      <!-- Regisration successful message -->
       <!-- prettier-ignore -->
       {% if messages %}
         {% for message in messages %}
-          {{message}}
-        {% endfor %}
-      {% endif %}
+      <div class="p-5 bg-blue-700 text-white font-bold text-lg">
+        {{message}}
+      </div>
+      {% endfor %} {% endif %}
     </header>
+    <!-- Header Ends -->
+
+    <!-- Main Body container-->
     <main class="grid grid-cols-5">
+      <!-- Dashboard Column Container -->
       <div class="col-span-1 bg-gray-200 border-r-2 border-red-500">
+        <!-- DashBoard Header and Svg -->
         <div
           class="shadow-lg mb-3 p-2 font-bold text-2xl gap-2 flex justify-center items-center"
         >
@@ -98,10 +120,14 @@
           </div>
           <div class="text-center text-red-500">DashBoard</div>
         </div>
+
+        <!-- Dashboard rows wrapper -->
         <div
           class="grid grid-rows-4 p-3 bg-blue-950 font-semibold text-lg text-white text-center"
         >
+          <!-- Business, Customer and Invoice Container -->
           <div class="row-span-3">
+            <!-- Business List and Svg -->
             <div
               class="flex justify-center items-center gap-2 shadow-xl p-3 w-full"
             >
@@ -125,6 +151,7 @@
                 <a href="{% url 'invoice:business' %}">Business List</a>
               </div>
             </div>
+            <!-- Customer List and Svg -->
             <div
               class="flex justify-center items-center gap-2 shadow-xl p-3 w-full"
             >
@@ -148,6 +175,7 @@
                 <a href="{% url 'invoice:customer_list' %}">Customers</a>
               </div>
             </div>
+            <!-- Invoice List and Svg -->
             <div
               class="flex justify-center gap-2 items-center shadow-xl p-3 w-full"
             >
@@ -172,7 +200,9 @@
               </div>
             </div>
           </div>
+          <!-- Profile and Logout Container-->
           <div class="row-span-1">
+            <!-- Profile link and Svg -->
             <div
               class="flex items-center justify-center gap-2 shadow-xl p-3 w-full"
             >
@@ -193,7 +223,7 @@
 
               <a href="{% url 'profile' %}">Profile</a>
             </div>
-
+            <!-- Logout Link and Svg -->
             <div
               class="flex items-center justify-center gap-2 shadow-xl p-3 w-full"
             >
@@ -220,49 +250,63 @@
           </div>
         </div>
       </div>
+      <!-- Dashboard Column End -->
 
-      <div class="col-span-4 bg-gray-200">{% block base %} {% endblock %}</div>
+      <!-- Body Details Container -->
+      <div class="col-span-4 bg-gray-200">
+        {% block base %}
+        <!-- Contents come in here -->
+        {% endblock %}
+      </div>
     </main>
+    <!-- Main Ends -->
   </body>
+  <!-- Body Ends -->
+
   <script>
+    // NavItems Toggle DOM Logic
     const toggle = document.querySelector("#toggle");
     const items = document.querySelector("#items");
 
     toggle.addEventListener("click", () => {
-      if (items.classList.contains("hidden")) {
-        items.classList.remove("hidden");
-      } else {
-        items.classList.add("hidden");
-      }
+      if (items.classList.contains("hidden")) items.classList.remove("hidden");
+      else items.classList.add("hidden");
     });
 
+    // Invoice Calculations Logic for InvoiceForm.html
     const itemContainers = document.querySelectorAll("#item-container");
     const quantities = document.querySelectorAll("#quantity");
     const prices = document.querySelectorAll("#price");
     const totals = document.querySelectorAll("#total");
+    const grandTotal = document.querySelector("#grand-total");
 
-    totals.forEach(ele => {
-      //ele.setAttribute("readonly", "");
-      console.log(ele);
-    });
-
-    const func = (one, two, three) => {
-      const item = one.value;
-      const quan = two.value;
-      const total = +item * +quan;
-      three.value = total;
+    //Function to calculate each row
+    const calcLogic = (itemQuantity, itemPrice, itemTotal) => {
+      const quantity = itemQuantity.value;
+      const price = itemPrice.value;
+      const total = +quantity * +price;
+      itemTotal.value = total;
     };
 
-    const funcer = e => {
-      const target = e.target;
+    // Logic to get access to  each input field
+    const invoiceFormCalc = event => {
+      const target = event.target;
       const div = target.closest("#item-container");
-      const uno = div.children[1].children[0];
-      const dos = div.children[2].children[0];
-      const tres = div.children[3].children[0];
-      func(uno, dos, tres);
+      const itemQuan = div.children[1].children[0];
+
+      const itemPrice = div.children[2].children[0];
+      const itemTotal = div.children[3].children[0];
+      calcLogic(itemQuan, itemPrice, itemTotal);
+      const total = [];
+      totals.forEach(ele => total.push(+ele.children[0].value));
+      const grandValue = total.reduce((prev, cur) => (cur += +prev));
+      grandTotal.children[0].children[0].value = grandValue;
     };
 
-    quantities.forEach(ele => ele.addEventListener("input", funcer));
-    prices.forEach(ele => ele.addEventListener("input", funcer));
+    // Function to target input events on each row to update items total
+    quantities.forEach(ele => ele.addEventListener("input", invoiceFormCalc));
+
+    // Function to target input events on each row to update grand total
+    prices.forEach(ele => ele.addEventListener("input", invoiceFormCalc));
   </script>
 </html>

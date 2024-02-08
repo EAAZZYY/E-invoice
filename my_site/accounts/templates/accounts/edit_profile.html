@@ -1,24 +1,35 @@
+<!-- Extend template from base.html -->
 <!-- prettier-ignore -->
-{% extends 'accounts/base.html' %}
+{% extends 'accounts/base.html' %} 
 {% block base %}
-
+<!-- Body container -->
 <div class="flex justify-center m-10">
   <div class="border border-blue-700 p-10">
+    <!-- Header -->
     <div class="bg-gray-300 p-5 font-bold text-2xl text-center">
       Update Profile
     </div>
+    <!-- Form Input -->
     <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} {% for field in user_form %}
+      <!-- prettier-ignore -->
+      {% csrf_token %}
+      <!-- User Form display -->
+      {% for field in user_form %}
       <div class="uppercase mt-5 font-semibold">
-        {{ field.name }}: <span class="border-2 border-black">{{ field }}</span>
-      </div>
-      {% endfor %} {% for profile in profile_form %}
-      <div class="uppercase mt-5 font-semibold">
-        {{ profile.name }}:
+        <!-- Label tag -->
+        {{ field.name }}:
+        <!--Input Tag -->
         <span class="border-2 border-black">{{ field }}</span>
       </div>
       {% endfor %}
 
+      <!-- Userprofile Form Display -->
+      {% for profile in profile_form %}
+      <div class="uppercase mt-5 font-semibold">
+        {{ profile.name }}:
+        <span class="">{{ profile }}</span>
+      </div>
+      {% endfor %}
       <div class="mt-5 p-3 text-white text-center text-lg bg-red-500 font-bold">
         <button type="submit">Submit</button>
       </div>

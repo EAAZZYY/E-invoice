@@ -1,17 +1,27 @@
 from django.db import models
-from django.utils import timezone
-from django.conf import settings
+
 from django.utils.text import slugify
 from uuid import uuid4
-# Create your models here.
 
+from django.utils import timezone
+
+from django.conf import settings
+
+
+# Create your models here.
+"""
+Business Schema
+"""
 class BusinessProfile(models.Model):
     business_name = models.CharField(max_length=200)
-    business_line = models.IntegerField(blank=True, null=True)
+    business_line = models.CharField(max_length=20, blank=True, null=True)
     business_email = models.EmailField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
+    class Meta:
+        ordering = ["-created_on"]
     
     def save(self,*args, **kwargs):
         if self.last_edited_on == "None":
@@ -21,24 +31,33 @@ class BusinessProfile(models.Model):
     def __str__(self):
         return self.business_name
 
-    
-class CustomerProfile(models.Model):
+
+"""
+Customer Schema
+"""    
+class Customer(models.Model):
     customer_name = models.CharField(max_length=200)
     customer_email = models.EmailField(blank=True, null=True)
-    customer_phone_number = models.IntegerField(blank=True, null=True)
+    customer_phone_number = models.CharField(max_length=20, blank=True, null=True)
     created_on = models.DateTimeField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
     business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, related_name="business")
     
+    class Meta:
+        ordering = ["-created_on"]
+    
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
             self.last_edited_on = timezone.localtime(timezone.now())
-        return super(CustomerProfile, self).save(*args, **kwargs)
+        return super(Customer, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.customer_name
 
 
+"""
+Invoice Schema
+"""
 class Invoice(models.Model):
     invoice_name = models.CharField(max_length=200)
     invoice_slug = models.SlugField(max_length=200, blank=True, null=True)
@@ -47,7 +66,7 @@ class Invoice(models.Model):
     created_on = models.DateField(auto_now=True)
     last_edited_on = models.DateTimeField(blank=True, null=True)
     business_name = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
-    customer_name = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
+    customer_name = models.ForeignKey(Customer, on_delete=models.CASCADE)
     
     class Meta:
         ordering = ["-created_on"]
@@ -69,6 +88,9 @@ class Invoice(models.Model):
         return self.invoice_name
     
 
+"""
+Invoice Item Schema
+"""
 class Item(models.Model):
     item_name = models.CharField(max_length=200)
     item_quantity = models.IntegerField()

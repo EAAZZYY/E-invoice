@@ -1,17 +1,24 @@
+<!-- Extend template from base.html -->
 <!-- prettier-ignore -->
 {% extends 'accounts/base.html' %}
 {% block base %}
+<!-- Body Container -->
 <div class="mx-5 mt-10 mb-20">
+  <!-- Header -->
   <div
     class="bg-red-600 text-white uppercase p-5 font-bold text-2xl text-center"
   >
     Create Invoice
   </div>
+
+  <!-- Invoice and Item Form  Start-->
+  <!-- Form Wrapper -->
   <div class="mt-5 flex justify-center font-semibold">
     <form method="POST">
       {% csrf_token %}
       <div class="flex justify-center">
         <!-- prettier-ignore -->
+        <!-- Invoice Form -->
         {{ form.non_form_errors }}
         <p class="p-3 text-xl">
           {{ form.invoice_name.label }}: {{ form.invoice_name }}
@@ -22,13 +29,17 @@
         <p class="p-3 text-xl">
           {{ form.customer_name.label }}: {{ form.customer_name }}
         </p>
+        <!-- Grand total after itemform_set  -->
       </div>
 
-      <div class="">
+      <!-- Item Formset -->
+      <div>
         <!-- prettier-ignore -->
         {{ items_formset.non_form_errors }}
         {{ items_formset.management_form }}
+        <!-- Loop through items_formset to get 10 item input fields -->
         {% for items in items_formset %}
+        <!-- Formset Wrapper -->
         <div class="flex" id="item-container">
           <!-- prettier-ignore -->
           <div class="p-3 text-lg">
@@ -40,17 +51,21 @@
           <div class="p-3 text-lg" id="price">
             {{ items.item_price.label }}: {{items.item_price}}
           </div>
-          <div aria-readonly="true" class="p-3 text-lg" id="total">
+          <div class="p-3 text-lg" id="total">
             {{ items.item_total.label }}: {{items.item_total}}
           </div>
           <!-- prettier-ignore -->
         </div>
         {% endfor %}
-        <div class="flex justify-center">
+        <!-- Loop Ends -->
+
+        <!-- Grand Total -->
+        <div class="flex justify-center" id="grand-total">
           <p class="p-5 text-red-700 font-bold text-4xl">
             {{ form.grand_total.label }}: {{ form.grand_total }}
           </p>
         </div>
+        <!-- Submit Button -->
         <div class="flex justify-center">
           <button
             class="mt-5 p-5 text-white text-center text-2xl bg-red-500 font-bold"

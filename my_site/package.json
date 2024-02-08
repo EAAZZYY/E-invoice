@@ -1,10 +1,11 @@
 {
-  "name": "my_site",
+  "name": "e-invoice",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "tailwind.config.js",
   "scripts": {
-    "build": "tailwindcss build accounts/static/accounts/input.css -o accounts/static/accounts/output.css --watch"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i accounts/static/accounts/input.css -o accounts/static/accounts/output.css --watch"
   },
   "keywords": [],
   "author": "",
