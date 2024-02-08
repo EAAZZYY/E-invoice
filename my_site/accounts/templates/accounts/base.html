@@ -229,40 +229,37 @@
     const items = document.querySelector("#items");
 
     toggle.addEventListener("click", () => {
-      if (items.classList.contains("hidden")) {
-        items.classList.remove("hidden");
-      } else {
-        items.classList.add("hidden");
-      }
+      if (items.classList.contains("hidden")) items.classList.remove("hidden");
+      else items.classList.add("hidden");
     });
 
     const itemContainers = document.querySelectorAll("#item-container");
     const quantities = document.querySelectorAll("#quantity");
     const prices = document.querySelectorAll("#price");
     const totals = document.querySelectorAll("#total");
+    const grandTotal = document.querySelector("#grand-total");
 
-    totals.forEach(ele => {
-      //ele.setAttribute("readonly", "");
-      console.log(ele);
-    });
-
-    const func = (one, two, three) => {
-      const item = one.value;
-      const quan = two.value;
-      const total = +item * +quan;
-      three.value = total;
+    const calcLogic = (itemQuantity, itemPrice, itemTotal) => {
+      const quantity = itemQuantity.value;
+      const price = itemPrice.value;
+      const total = +quantity * +price;
+      itemTotal.value = total;
     };
-
-    const funcer = e => {
-      const target = e.target;
+    const invoiceFormCalc = event => {
+      const target = event.target;
       const div = target.closest("#item-container");
-      const uno = div.children[1].children[0];
-      const dos = div.children[2].children[0];
-      const tres = div.children[3].children[0];
-      func(uno, dos, tres);
+      const itemQuan = div.children[1].children[0];
+
+      const itemPrice = div.children[2].children[0];
+      const itemTotal = div.children[3].children[0];
+      calcLogic(itemQuan, itemPrice, itemTotal);
+      const total = [];
+      totals.forEach(ele => total.push(+ele.children[0].value));
+      const grandValue = total.reduce((prev, cur) => (cur += +prev));
+      grandTotal.children[0].children[0].value = grandValue;
     };
 
-    quantities.forEach(ele => ele.addEventListener("input", funcer));
-    prices.forEach(ele => ele.addEventListener("input", funcer));
+    quantities.forEach(ele => ele.addEventListener("input", invoiceFormCalc));
+    prices.forEach(ele => ele.addEventListener("input", invoiceFormCalc));
   </script>
 </html>
