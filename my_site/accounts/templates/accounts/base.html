@@ -235,5 +235,34 @@
         items.classList.add("hidden");
       }
     });
+
+    const itemContainers = document.querySelectorAll("#item-container");
+    const quantities = document.querySelectorAll("#quantity");
+    const prices = document.querySelectorAll("#price");
+    const totals = document.querySelectorAll("#total");
+
+    totals.forEach(ele => {
+      //ele.setAttribute("readonly", "");
+      console.log(ele);
+    });
+
+    const func = (one, two, three) => {
+      const item = one.value;
+      const quan = two.value;
+      const total = +item * +quan;
+      three.value = total;
+    };
+
+    const funcer = e => {
+      const target = e.target;
+      const div = target.closest("#item-container");
+      const uno = div.children[1].children[0];
+      const dos = div.children[2].children[0];
+      const tres = div.children[3].children[0];
+      func(uno, dos, tres);
+    };
+
+    quantities.forEach(ele => ele.addEventListener("input", funcer));
+    prices.forEach(ele => ele.addEventListener("input", funcer));
   </script>
 </html>

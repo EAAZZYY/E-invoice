@@ -49,6 +49,9 @@ class Invoice(models.Model):
     business_name = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
     customer_name = models.ForeignKey(CustomerProfile, on_delete=models.CASCADE)
     
+    class Meta:
+        ordering = ["-created_on"]
+    
         
     def save(self,*args,**kwargs):
         if self.last_edited_on == "None":
