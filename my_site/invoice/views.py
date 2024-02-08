@@ -27,8 +27,8 @@ class LoginRequired(LoginRequiredMixin):
                 self.get_redirect_field_name())
         return super(LoginRequired, self).dispatch(request,self,*args,**kwargs)
 
-class HomeView(TemplateView):
-    template_name = 'invoice/home.html'
+def homeview(request):
+    return render(request, "invoice/home.html")
 
 
 def business_list(request):

@@ -1,47 +1,66 @@
 <!-- prettier-ignore -->
 {% extends 'accounts/base.html' %}
 {% block base %}
-<div class="card-header text-white bg-info">
-  <div class="card-title">Create Invoice</div>
-</div>
-<div class="card-body">
-  <form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <!-- prettier-ignore -->
-      {{ form.non_form_errors }}
-      <p>{{ form.invoice_name.label }}: {{ form.invoice_name }}</p>
-      <p>{{ form.business_name.label }}: {{ form.business_name }}</p>
-      <p>{{ form.customer_name.label }}: {{ form.customer_name }}</p>
-    </div>
-    <div class="card-header text-white bg-info">
-      <div class="card-title">Add Items</div>
-    </div>
-    <div class="card-body">
-      <div class="form-group">
+<div class="mx-5 mt-10 mb-20">
+  <div
+    class="bg-red-600 text-white uppercase p-5 font-bold text-2xl text-center"
+  >
+    Create Invoice
+  </div>
+  <div class="mt-5 flex justify-center font-semibold">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="flex justify-center">
+        <!-- prettier-ignore -->
+        {{ form.non_form_errors }}
+        <p class="p-3 text-xl">
+          {{ form.invoice_name.label }}: {{ form.invoice_name }}
+        </p>
+        <p class="p-3 text-xl">
+          {{ form.business_name.label }}: {{ form.business_name }}
+        </p>
+        <p class="p-3 text-xl">
+          {{ form.customer_name.label }}: {{ form.customer_name }}
+        </p>
+      </div>
+
+      <div class="">
         <!-- prettier-ignore -->
         {{ items_formset.non_form_errors }}
         {{ items_formset.management_form }}
         {% for items in items_formset %}
-        <div style="display: flex">
+        <div class="flex" id="item-container">
           <!-- prettier-ignore -->
-          <div>
+          <div class="p-3 text-lg">
             {{ items.item_name.label }}: {{items.item_name}}
           </div>
-          <div>{{ items.item_quantity.label }}: {{items.item_quantity}}</div>
-          <div>{{ items.item_price.label }}: {{items.item_price}}</div>
-          <div>{{ items.item_total.label }}: {{items.item_total}}</div>
+          <div class="p-3 text-lg" id="quantity">
+            {{ items.item_quantity.label }}: {{items.item_quantity}}
+          </div>
+          <div class="p-3 text-lg" id="price">
+            {{ items.item_price.label }}: {{items.item_price}}
+          </div>
+          <div aria-readonly="true" class="p-3 text-lg" id="total">
+            {{ items.item_total.label }}: {{items.item_total}}
+          </div>
           <!-- prettier-ignore -->
-          {% if items_formset.can_delete %}
-          <div>{{ items.DELETE }} {{ items.DELETE.label }}</div>
-          {% endif %}
         </div>
         {% endfor %}
+        <div class="flex justify-center">
+          <p class="p-5 text-red-700 font-bold text-4xl">
+            {{ form.grand_total.label }}: {{ form.grand_total }}
+          </p>
+        </div>
+        <div class="flex justify-center">
+          <button
+            class="mt-5 p-5 text-white text-center text-2xl bg-red-500 font-bold"
+            type="submit"
+          >
+            Create Invoice
+          </button>
+        </div>
       </div>
-      <p>{{ form.grand_total.label }}: {{ form.grand_total }}</p>
-    </div>
-    <button type="submit">Create Invoice</button>
-  </form>
+    </form>
+  </div>
 </div>
-
 {% endblock %}
