@@ -1,5 +1,10 @@
-{% extends 'accounts/base.html' %} {% block base %}
+<!-- Extend template from base.html -->
+<!-- prettier-ignore -->
+{% extends 'accounts/base.html' %}
+{% block base %}
+<!-- Body container -->
 <div class="grid grid-cols-2 p-5">
+  <!-- Picture Container -->
   <div class="col-span-1 mr-5 flex justify-center">
     <img
       class="bg-white overflow-hidden object-cover shadow-lg rounded p-2"
@@ -7,19 +12,20 @@
       alt="{{ user.username }}'s picture"
     />
   </div>
+  <!-- Detail container -->
   <div class="col-span-1">
     <div class="p-5 bg-blue-950 text-white font-bold text-2xl text-center">
       Contact Details
     </div>
-    <div class="uppercase font-bold p-3">
+    <div class="capitalize font-bold p-3">
       Username:
       <span>{{ user.username }}</span>
     </div>
-    <div class="uppercase font-bold p-3">
+    <div class="capitalize font-bold p-3">
       Name:
       <span>{{ user.first_name }} {{ user.last_name }}</span>
     </div>
-    <div class="uppercase font-bold p-3">
+    <div class="font-bold p-3">
       Phone Number: {{ user.profile.phone_number }}
     </div>
     <div class="font-semibold p-3 italic">

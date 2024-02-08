@@ -1,9 +1,12 @@
 from django import forms
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
 from .models import Profile
 
 
+"""Extended Django inbuilt UserCreationForm to include email on signup"""
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
     
@@ -12,6 +15,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username","email","password1","password2"]
         
 
+    """ User Edit Form """
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
@@ -21,6 +25,8 @@ class UserEditForm(forms.ModelForm):
             "last_name":"Surname"
         }
 
+
+""" Profile Edit Form"""
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
