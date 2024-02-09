@@ -42,8 +42,8 @@
           <td class="px-6 py-3 border border-black">
             {{ invoice.grand_total }}
           </td>
+          <!-- Action Buttons -->
           <td class="px-6 py-3 border border-black">
-            <!-- Action Buttons -->
             <a
               class="border rounded px-2 py-1 bg-red-950 text-white"
               href="{% url 'invoice:invoice_detail' invoice.invoice_slug %}"
