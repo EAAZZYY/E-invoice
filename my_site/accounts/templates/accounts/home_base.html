@@ -1,0 +1,120 @@
+<!-- This template is the UI displayed when user is NOT authenticated -->
+
+<!-- Django tag to import tailwind file -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-invoice</title>
+
+    <!-- Link to tailwind file -->
+    <link rel="stylesheet" href="{% static 'accounts/output.css' %}" />
+  </head>
+  <body>
+    <header>
+      <!-- Navbar Wrapper -->
+      <nav class="shadow-md bg-blue-950 border-b-2 border-blue-300">
+        <!-- Logo and Navitems-Toggle container -->
+        <div class="p-3 flex justify-between">
+          <!-- Logo container -->
+          <div class="flex items-center gap-2">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="text-white w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <a
+                class="font-semibold text-2xl cursor-pointer text-red-500"
+                href="{% url 'invoice:home' %}"
+                >E-Invoice</a
+              >
+            </div>
+          </div>
+          <!-- Item toggle for small screens -->
+          <div
+            id="toggle"
+            class="text-red-600 cursor-pointer md:hidden font-medium"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </div>
+        </div>
+        <!-- Nav Items -->
+
+        <div id="items" class="hidden p-3 md:block">
+          <ul class="md:flex justify-end gap-2 text-gray-700">
+            <!-- Items to show if user is Authenticated -->
+            {% if user.is_authenticated %}
+            <li class="bg-red-700 text-white p-2">
+              <a href="{% url 'invoice:business' %}">Dashboard</a>
+            </li>
+            <li class="bg-slate-200 p-2">
+              <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button>Logout</button>
+              </form>
+            </li>
+            <!-- Items to show if user is Not Authenticated -->
+            {% else %}
+            <li class="bg-slate-200 p-2">
+              <a href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="bg-slate-200 p-2">
+              <a href="{% url 'signup' %}">Register</a>
+            </li>
+            {% endif %}
+            <!-- Items to show regardless of authentication -->
+            <li class="bg-slate-200 p-2"><a href="">About</a></li>
+            <li class="bg-slate-200 p-2"><a href="">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Body Details Container -->
+    <div class="col-span-4 bg-gray-200">
+      {% block base %}
+      <!-- Contents come in here -->
+      {% endblock %}
+    </div>
+  </body>
+  <script>
+    // NavItems Toggle DOM Logic
+    const toggle = document.querySelector("#toggle");
+    const items = document.querySelector("#items");
+
+    toggle.addEventListener("click", () => {
+      if (items.classList.contains("hidden")) {
+        items.classList.remove("hidden");
+      } else {
+        items.classList.add("hidden");
+      }
+    });
+  </script>
+</html>
