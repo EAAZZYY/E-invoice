@@ -180,10 +180,10 @@ def delete_customer(request, id):
     """
     Logic to get customer instance to delete customer
     """
-    customer = models.CustomerProfile.objects.get(id=id)
+    customer = models.Customer.objects.get(id=id)
     if request.method == 'POST':
         customer.delete()
-        return redirect('invoice:business')
+        return redirect('invoice:customer_list')
     return render(request, 'invoice/delete.html', context={'customer':customer})
 
 @login_required

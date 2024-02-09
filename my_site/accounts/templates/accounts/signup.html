@@ -11,7 +11,7 @@
       <!-- Form Input -->
       {% csrf_token %}
       <!-- Form Display -->
-      {% for field in form %}
+      {% for field in form %} {{ form.non_form_errors }}
       <div class="uppercase mt-5 font-semibold">
         {{ field.name }}:
         <span class="border-2 border-black">{{ field }}</span>
