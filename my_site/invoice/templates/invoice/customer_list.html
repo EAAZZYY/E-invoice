@@ -18,8 +18,8 @@
         </tr>
       </thead>
       <tbody class="font-semibold">
+        {% for customer in customers %}
         <tr>
-          {% for customer in customers %}
           <td class="px-6 py-3 border border-black">
             {{ customer.customer_name }}
           </td>
@@ -36,8 +36,8 @@
               >Delete</a
             >
           </td>
-          {% endfor %}
         </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
