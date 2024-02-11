@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import RegisterForm
+from django.contrib.auth.models import User
 from .forms import UserEditForm, ProfileEditForm
 
 # Create your views here.
@@ -19,19 +19,23 @@ def profile(request):
 
 def signup(request):
     """
-    Logic to handle new user registration if request is POST
+    Logic to handle new user registration
     """
     if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            #getting username from submitted form to use for messages
-            username = form.cleaned_data.get("username")
-            messages.success(request, f"Welcome in {username}")
-            form.save()
-            return redirect("login")
-    else:
-        form = RegisterForm()
-    return render(request, "accounts/signup.html", {"form":form})
+        username=request.POST["username"]
+        email=request.POST["email"]
+        password=request.POST["password"]
+        password2=request.POST["password2"]
+        user = User.objects.create_user(username=username,email=email,password=password)
+        user.save()        
+        
+        #message to use for successful reqgistration
+        messages.success(request, f"Welcome in {username}")
+            
+        return redirect("login")
+
+        
+    return render(request, "accounts/signup.html", )
 
 
 @login_required
