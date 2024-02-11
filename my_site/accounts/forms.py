@@ -5,17 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import Profile
 
-
-"""Extended Django inbuilt UserCreationForm to include email on signup"""
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    
-    class Meta:
-        model = User
-        fields = ["username","email","password1","password2"]
-        
-
-    """ User Edit Form """
+""" User Edit Form """
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User

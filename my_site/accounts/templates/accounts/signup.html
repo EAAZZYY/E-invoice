@@ -11,12 +11,53 @@
       <!-- Form Input -->
       {% csrf_token %}
       <!-- Form Display -->
-      {% for field in form %} {{ form.non_form_errors }}
-      <div class="uppercase mt-5 font-semibold">
-        {{ field.name }}:
-        <span class="border-2 border-black">{{ field }}</span>
+
+      <div class="capitalize mt-5 font-semibold">
+        <div>
+          <label for="username">Username</label>
+          <input
+            class="block border border-black"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Create your username"
+            required
+          />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input
+            class="block border border-black"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your Email"
+            required
+          />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input
+            class="block border border-black"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <div>
+          <label for="password">Confirm Password</label>
+          <input
+            class="block border border-black"
+            type="password"
+            name="password2"
+            id="password2"
+            placeholder="Confirm your password"
+            required
+          />
+        </div>
       </div>
-      {% endfor %}
 
       <div class="mt-5 p-3 text-white text-center text-lg bg-red-500 font-bold">
         <button type="submit">Sign-up</button>
