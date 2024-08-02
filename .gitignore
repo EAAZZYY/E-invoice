@@ -1,5 +1,5 @@
-*__pycache__/
+*__pycache__
 migrations
 db.sqlite3
-media
+profile_pic
 node_modules
